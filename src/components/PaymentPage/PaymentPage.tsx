@@ -3,7 +3,7 @@ import Form from "../Form"
 const PaymentPage = () => {
 
   return (
-      <div className="flex  px-6 py-12 flex-col items-center  mx-auto container h-screen md:w-[60%] lg:w-[30%]">
+      <div className="flex p-2 py-12 flex-col items-center  mx-auto container h-screen md:w-[60%] lg:w-[30%]">
           <div className="flex text-slate-800/90 text-center flex-col space-y-4">
               <img
                   className="w-1/2 mx-auto"
