@@ -3,7 +3,6 @@ import { json, useLoaderData } from "react-router-dom";
 
 const PaymentPage = () => {
     const { data }: any = useLoaderData();
-     console.log(data);
      
 
     return (
@@ -46,7 +45,6 @@ export const loader = async ({ params }: any) => {
                 "Bearer sk_test_88a9e0272a102e5c983c0df0a4754a4b578aeb76",
         },
     });
-    console.log(data);
     if (!data.ok) throw json(data.status);
     return data;
 };

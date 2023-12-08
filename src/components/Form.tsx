@@ -1,5 +1,6 @@
 import { BsCaretDownFill } from "react-icons/bs";
 import { useState } from "react";
+import PaystackPop from "@paystack/inline-js";
 
 const FormData = ({ data }: any) => {
     const [name, setname] = useState("");
@@ -7,10 +8,9 @@ const FormData = ({ data }: any) => {
     const [email, setemail] = useState("");
     const [phone, setphonenumber] = useState("");
     const [amount, setamount] = useState("");
-    const [Address, setAddress] = useState("");
     const [inputValues, setInputValues] = useState(
         data.custom_fields.reduce((acc: any, field: any) => {
-            acc[field.display_name] = ""; // Initialize with empty values
+            acc[field.variable_name] = ""; // Initialize with empty values
             return acc;
         }, {})
     );
@@ -24,6 +24,25 @@ const FormData = ({ data }: any) => {
 
     const handlePayWithPayStack = (e: React.FormEvent) => {
         e.preventDefault();
+        const paystack = new PaystackPop();
+        paystack.newTransaction({
+            key: import.meta.env.VITE_API_KEY,
+            amount: +amount * 100,
+            email,
+            firstname: name,
+            lastname,
+            slug: "adewale",
+            onSuccess(transaction) {
+                let message = `Payment Completed! ${transaction.refrence}`;
+                setamount("");
+                setname("");
+                setlastname("");
+                alert(message);
+            },
+            onCancel() {
+                alert("You have Canceled it");
+            },
+        });
     };
 
     return (
@@ -149,27 +168,6 @@ const FormData = ({ data }: any) => {
                         />
                     </div>
                 </div>
-                <div className="flex-1 space-y-1">
-                    <label
-                        htmlFor="lastname"
-                        className="text-sm text-slate-800 mb-2 font-medium"
-                    >
-                        Address
-                    </label>
-                    <input
-                        value={Address}
-                        required
-                        onChange={(e) => setAddress(e.target.value)}
-                        className="border focus:outline-none 
-                        flex-1
-                        w-full
-                        focus:border-blue-600
-                      border-slate-300 p-[0.3rem]"
-                        type="text"
-                        name="name"
-                        id="name"
-                    />
-                </div>
 
                 {data.custom_fields &&
                     data.custom_fields.map((value: any, i: number) => (
@@ -185,7 +183,7 @@ const FormData = ({ data }: any) => {
                             </label>
                             <input
                                 required
-                                value={inputValues[value.diaplay_name]}
+                                value={inputValues[value.variable_name]}
                                 onChange={(e) =>
                                     handleCustomInput(
                                         e.target.value,
