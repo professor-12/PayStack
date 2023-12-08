@@ -1,41 +1,29 @@
 import { BsCaretDownFill } from "react-icons/bs";
 import { useState } from "react";
-import PaystackPop from "@paystack/inline-js";
 
-const Form = () => {
+const FormData = ({ data }: any) => {
     const [name, setname] = useState("");
     const [lastname, setlastname] = useState("");
     const [email, setemail] = useState("");
     const [phone, setphonenumber] = useState("");
     const [amount, setamount] = useState("");
     const [Address, setAddress] = useState("");
-    const [attend, setattend] = useState("");
+    const [inputValues, setInputValues] = useState(
+        data.custom_fields.reduce((acc: any, field: any) => {
+            acc[field.display_name] = ""; // Initialize with empty values
+            return acc;
+        }, {})
+    );
+
+    const handleCustomInput = (value: string, identifier: string) => {
+        setInputValues({
+            ...inputValues,
+            [identifier]: value,
+        });
+    };
 
     const handlePayWithPayStack = (e: React.FormEvent) => {
         e.preventDefault();
-        const paystack = new PaystackPop();
-        paystack.newTransaction({
-            key: import.meta.env.VITE_APIKEY,
-            amount: +amount * 100,
-            email,
-              firstname: name,
-            address:Address,
-            lastname,
-            onSuccess(transaction) {
-                  let message = `Payment Completed! ${transaction.refrence}`;
-                  setAddress("")
-                  setamount("")
-                  setname("")
-                  setlastname("")
-                  setattend("")
-                  alert(message)
-              },
-            onCancel() {
-                alert("You have Canceled it");
-            },
-        });
-          
-          
     };
 
     return (
@@ -93,7 +81,7 @@ const Form = () => {
                         htmlFor="lastname"
                         className="text-sm text-slate-800 mb-2 font-medium"
                     >
-                        Email
+                        Email Address
                     </label>
                     <input
                         required
@@ -109,27 +97,29 @@ const Form = () => {
                         id="name"
                     />
                 </div>
-                <div className="flex-1 space-y-1">
-                    <label
-                        htmlFor="lastname"
-                        className="text-sm text-slate-800 mb-2 font-medium"
-                    >
-                        Phone Number
-                    </label>
-                    <input
-                        required
-                        value={phone}
-                        onChange={(e) => setphonenumber(e.target.value)}
-                        className="border focus:outline-none 
+                {data.collect_phone && (
+                    <div className="flex-1 space-y-1">
+                        <label
+                            htmlFor="lastname"
+                            className="text-sm text-slate-800 mb-2 font-medium"
+                        >
+                            Phone Number
+                        </label>
+                        <input
+                            required
+                            value={phone}
+                            onChange={(e) => setphonenumber(e.target.value)}
+                            className="border focus:outline-none 
                         flex-1
                         w-full
                         focus:border-blue-600
                       border-slate-300 p-[0.3rem]"
-                        type="tel"
-                        name="name"
-                        id="name"
-                    />
-                </div>
+                            type="tel"
+                            name="name"
+                            id="name"
+                        />
+                    </div>
+                )}
 
                 <div className="flex flex-col items-baseline">
                     <p className="text-sm text-slate-800 mb-2 font-medium">
@@ -137,7 +127,9 @@ const Form = () => {
                     </p>
                     <div className="flex w-full gap-3">
                         <div className="border w-[30%] px-3 border-slate-200 flex  items-center justify-between">
-                            <div className="text-sm text-slate-600">NGN</div>
+                            <div className="text-sm text-slate-600">
+                                {data.currency}
+                            </div>
                             <span className="text-slate-400 text-sm">
                                 <BsCaretDownFill />
                             </span>
@@ -165,6 +157,7 @@ const Form = () => {
                         Address
                     </label>
                     <input
+                        value={Address}
                         required
                         onChange={(e) => setAddress(e.target.value)}
                         className="border focus:outline-none 
@@ -177,27 +170,39 @@ const Form = () => {
                         id="name"
                     />
                 </div>
-                <div className="flex-1 space-y-1">
-                    <label
-                        htmlFor="lastname"
-                        className="text-sm text-slate-800 mb-2 font-medium"
-                    >
-                        Will you be attending
-                    </label>
-                    <input
-                        required
-                        value={attend}
-                        onChange={(e) => setattend(e.target.value)}
-                        className="border focus:outline-none 
+
+                {data.custom_fields &&
+                    data.custom_fields.map((value: any, i: number) => (
+                        <div
+                            key={value.variable_name + i}
+                            className="flex-1 space-y-1"
+                        >
+                            <label
+                                htmlFor="lastname"
+                                className="text-sm text-slate-800 mb-2 font-medium"
+                            >
+                                {value.variable_name}
+                            </label>
+                            <input
+                                required
+                                value={inputValues[value.diaplay_name]}
+                                onChange={(e) =>
+                                    handleCustomInput(
+                                        e.target.value,
+                                        value.variable_name
+                                    )
+                                }
+                                className="border focus:outline-none 
                         flex-1
                         w-full
                         focus:border-blue-600
                       border-slate-300 p-[0.3rem]"
-                        type="text"
-                        name="name"
-                        id="name"
-                    />
-                </div>
+                                type="text"
+                                name="name"
+                                id="name"
+                            />
+                        </div>
+                    ))}
 
                 <div className="flex pt-5">
                     <button className="bg-[#3bb75e] px-3 p-[0.6rem] mx-auto text-white font-semibold text-sm rounded">
@@ -219,4 +224,4 @@ const Form = () => {
     );
 };
 
-export default Form;
+export default FormData;
