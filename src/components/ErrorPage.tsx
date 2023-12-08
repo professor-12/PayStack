@@ -22,7 +22,7 @@ const ErrorPage = () => {
           return (
               <div className="flex p-12 h-screen bg-slate-50 flex-col items-center">
                   <img
-                      src="/public/404.png"
+                      src="../../public/404.png"
                       className="h-[40%]"
                       alt="404 Image"
                   />
