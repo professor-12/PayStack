@@ -1,13 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PayStack Emmanuel</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PayStack Emmanuel</title>
+    </head>
+    <style>
+        table,
+        tbody,
+        tr,
+        th ,td {
+            table-layout: fixed;
+            width: 100%;
+            padding: 12px;
+            padding: 20px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        th {
+            font-weight: 400;
+            font-size: 1.4rem;
+            text-align: left;
+        }
+
+        td,
+        th {
+            margin: 1px;
+        }
+       
+        tbody > tr:nth-child(2n-1) {
+
+            background: #e3e3e350;
+        }
+        tbody > tr:hover {
+           background: #bd02a43b;
+           transition: all 1s;
+        }
+    </style>
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
 </html>
