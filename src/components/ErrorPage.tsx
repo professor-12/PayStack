@@ -7,7 +7,7 @@ const ErrorPage = () => {
         return (
             <div className="flex p-12 h-screen bg-slate-50 flex-col items-center">
                 <img
-                    src="/public/FourZeroFour.png"
+                    src="/FourZeroFour.png"
                     className="h-[40%]"
                     alt="404 Image"
                 />
@@ -23,7 +23,7 @@ const ErrorPage = () => {
         return (
             <div className="flex p-12 h-screen bg-slate-50 flex-col items-center">
                 <img
-                    src="/public/FourZeroFour.png"
+                    src="/FourZeroFour.png"
                     className="h-[40%]"
                     alt="404 Image"
                 />
